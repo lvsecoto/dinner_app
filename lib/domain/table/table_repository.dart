@@ -44,16 +44,37 @@ class TableRepository {
     final response = await dio.get("/classes/table_data/LuF1000H");
     List data = response.data["kv"];
 
-    return data.mapIndexedNotNull((index, e) => TableForm(index: index))
+    return data
+        .mapIndexedNotNull((index, e) => TableForm(index: index))
         .toList();
   }
 
   Future<void> add() async {
     return dio.put("/classes/table_data/LuF1000H",
         data: jsonEncode({
-          "kv": {"__op": "Add", "objects": [{"name": "表1"}]}
-        })
-    );
+          "kv": {
+            "__op": "Add",
+            "objects": [
+              {"name": "表1"}
+            ]
+          }
+        }));
+  }
+
+  Future<void> delete(int index) async {
+    final respone = await dio.get("/classes/table_data/LuF1000H",
+        queryParameters: {"where": "\"arrayKey\":2"});
+    var data = respone.data["kv"][index];
+
+    return dio.put("/classes/table_data/LuF1000H",
+        data: jsonEncode({
+          "kv": {
+            "__op": "Remove",
+            "objects": [
+              data,
+            ]
+          }
+        }));
   }
 }
 

@@ -33,4 +33,21 @@ class TableAllController extends ChangeNotifier {
     return tables.length - 1;
   }
 
+  Future<int> delete(int index, TableData tableData) async {
+    await fetch();
+
+    if ((tables?.length ?? 1) == 1) {
+      return 0;
+    }
+
+    await tableRepository.delete(index);
+    await fetch();
+
+    if (index > 1) {
+      return index - 1;
+    } else {
+      return index;
+    }
+  }
+
 }

@@ -11,7 +11,28 @@ class StatisticsContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text("饭量统计")),
+      appBar: AppBar(
+        title: Text("饭量统计"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () async {
+              var controller = Provider.of<DataController>(
+                  context, listen: false);
+              var index = controller.tableIndex;
+              var newIndex = await Provider.of<TableAllController>(
+                  context, listen: false)
+                  .delete(index, controller.tableData);
+
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          StatisticsPageWidget(
+                              tableIndex: newIndex)));
+            },
+          )
+        ],
+      ),
       drawer: Drawer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -33,9 +54,9 @@ class StatisticsContentWidget extends StatelessWidget {
                         backgroundColor: Colors.white,
                         child: Icon(Icons.add, color: Colors.blue),
                         onPressed: () async {
-                          var newTableIndex = await Provider.of<
-                              TableAllController>(
-                              context, listen: false)
+                          var newTableIndex =
+                          await Provider.of<TableAllController>(context,
+                              listen: false)
                               .addTable();
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
