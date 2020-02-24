@@ -1,5 +1,8 @@
+import 'package:dinner_app/domain/table/table_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+
+export 'DataController.dart';
 
 class StatisticsController extends ChangeNotifier {
   static StatisticsController get(BuildContext context) =>
@@ -75,5 +78,16 @@ class StatisticsController extends ChangeNotifier {
       result = yuanResult + qiaoResult + maResult + baResult;
       notifyListeners();
     }
+  }
+
+  void setTableData(TableData tableData) {
+    yuanRiceAmount = tableData.yuanAmount;
+    yuanSchedule = tableData.yuanSchedule;
+    qiaoRiceAmount = tableData.qiaoAmount;
+    qiaoSchedule = tableData.qiaoSchedule;
+    maRiceAmount = tableData.maAmount;
+    baRiceAmount = tableData.baAmount;
+    baSchedule = tableData.baSchedule;
+    cal();
   }
 }

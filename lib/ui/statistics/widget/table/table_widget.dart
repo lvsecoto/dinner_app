@@ -1,5 +1,7 @@
+import 'package:dinner_app/domain/table/table_repository.dart';
 import 'package:dinner_app/ui/statistics/controller/controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'table.dart';
 
@@ -16,31 +18,70 @@ class TableWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TableDataWidget(
-            title: "袁",
-            changedAmount: (it) =>
-                StatisticsController.get(context).setYuanRiceAmount(it),
-            changedScheduler: (it) =>
-                StatisticsController.get(context).setYuanSchedule(it),
+          Consumer<DataController>(
+            builder: (_, controller, __) {
+              print(controller.tableData?.yuanAmount);
+              return TableDataWidget(
+                amount: controller.tableData?.yuanAmount,
+                schedule: controller.tableData?.yuanSchedule,
+                title: "袁",
+                changedAmount: (it) {
+                  StatisticsController.get(context).setYuanRiceAmount(it);
+                  DataController.get(context).update(TableData(yuanAmount: it));
+                },
+                changedScheduler: (it) {
+                  StatisticsController.get(context).setYuanSchedule(it);
+                  DataController.get(context)
+                      .update(TableData(yuanSchedule: it));
+                },
+              );
+            },
           ),
-          TableDataWidget(
-            title: "乔",
-            changedAmount: (it) =>
-                StatisticsController.get(context).setQiaoRiceAmount(it),
-            changedScheduler: (it) =>
-                StatisticsController.get(context).setQiaoSchedule(it),
+          Consumer<DataController>(
+            builder: (_, controller, __) =>
+                TableDataWidget(
+                  amount: controller.tableData?.qiaoAmount,
+                  schedule: controller.tableData?.qiaoSchedule,
+                  title: "乔",
+                  changedAmount: (it) {
+                    StatisticsController.get(context).setQiaoRiceAmount(it);
+                    DataController.get(context).update(
+                        TableData(qiaoAmount: it));
+                  },
+                  changedScheduler: (it) {
+                    StatisticsController.get(context).setQiaoSchedule(it);
+                    DataController.get(context).update(
+                        TableData(qiaoSchedule: it));
+                  },
+                ),
           ),
-          TableDataWidget(
-            title: "妈",
-            changedAmount: (it) =>
-                StatisticsController.get(context).setMaRiceAmount(it),
+          Consumer<DataController>(
+            builder: (_, controller, __) =>
+                TableDataWidget(
+                  amount: controller.tableData?.maAmount,
+                  title: "妈",
+                  changedAmount: (it) {
+                    StatisticsController.get(context).setMaRiceAmount(it);
+                    DataController.get(context).update(TableData(maAmount: it));
+                  },
+                ),
           ),
-          TableDataWidget(
-            title: "爸",
-            changedAmount: (it) =>
-                StatisticsController.get(context).setBaRiceAmount(it),
-            changedScheduler: (it) =>
-                StatisticsController.get(context).setBaSchedule(it),
+          Consumer<DataController>(
+            builder: (_, controller, __) =>
+                TableDataWidget(
+                  amount: controller.tableData?.baAmount,
+                  schedule: controller.tableData?.baSchedule,
+                  title: "爸",
+                  changedAmount: (it) {
+                    StatisticsController.get(context).setBaRiceAmount(it);
+                    DataController.get(context).update(TableData(baAmount: it));
+                  },
+                  changedScheduler: (it) {
+                    StatisticsController.get(context).setBaSchedule(it);
+                    DataController.get(context).update(
+                        TableData(baSchedule: it));
+                  },
+                ),
           ),
         ],
       ),

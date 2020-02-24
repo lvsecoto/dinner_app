@@ -9,7 +9,9 @@ class StatisticsPageWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<StatisticsController>(
-            create: (_) => StatisticsController())
+            create: (_) => StatisticsController()),
+        ChangeNotifierProvider<DataController>(
+            create: (_) => DataController(StatisticsController.get(_)))
       ],
       child: StatisticsContentWidget(),
     );
