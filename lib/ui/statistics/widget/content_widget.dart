@@ -1,5 +1,8 @@
+import 'package:dinner_app/ui/statistics/controller/table_list_controller.dart';
 import 'package:dinner_app/ui/statistics/statistics.dart';
+import 'package:dinner_app/ui/statistics/widget/talbe_list_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'widget.dart';
 
@@ -10,25 +13,41 @@ class StatisticsContentWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("饭量统计")),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             DrawerHeader(
-              child: Text("表格一览",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "表格一览",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.white,
+                        child: Icon(Icons.add, color: Colors.blue),
+                        onPressed: () {
+                          Provider.of<TableAllController>(
+                              context, listen: false)
+                              .addTable();
+                        },
+                      ),
+                    ),
+                  )
+                ],
               ),
               decoration: BoxDecoration(
                 color: theme.primaryColor,
               ),
             ),
-            ListTile(
-              title: Text("abcd"),
-            ),
-            ListTile(
-              title: Text("abcd"),
+            Expanded(
+              child: TableListWidget(),
             )
           ],
         ),

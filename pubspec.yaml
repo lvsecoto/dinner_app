@@ -27,6 +27,7 @@ dependencies:
   provider: ^4.0.4
   dio: ^3.0.8
   json_annotation: ^3.0.1
+  dartx: ^0.3.0
 
 dev_dependencies:
   flutter_test:

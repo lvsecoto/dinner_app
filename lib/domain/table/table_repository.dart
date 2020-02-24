@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dartx/dartx.dart';
 import 'package:dio/dio.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -17,26 +18,34 @@ var dio = Dio(BaseOptions(headers: {
   ));
 
 class TableRepository {
-  Future<TableData> getTableData() async {
+  Future<TableData> getTableData(int tableIndex) async {
     final respone = await dio.get("/classes/table_data/LuF1000H",
         queryParameters: {"where": "\"arrayKey\":2"});
-    var data = respone.data["kv"][0];
+    var data = respone.data["kv"][tableIndex];
     print(data);
     return TableData.fromJson(data);
   }
 
-  Future<void> updateTableDate(TableData tableData) async {
+  Future<void> updateTableDate(int tableIndex, TableData tableData) async {
     var kvList = tableData
         .toJson()
         .entries
         .map((it) => {
-              "kv.0.${it.key}": it.value,
+      "kv.$tableIndex.${it.key}": it.value,
             })
         .toList();
 
     for (var it in kvList) {
       await dio.put("/classes/table_data/LuF1000H", data: jsonEncode(it));
     }
+  }
+
+  Future<List<TableForm>> getTableForm() async {
+    final response = await dio.get("/classes/table_data/LuF1000H");
+    List data = response.data["kv"];
+
+    return data.mapIndexedNotNull((index, e) => TableForm(index: index))
+        .toList();
   }
 }
 
@@ -73,4 +82,10 @@ class TableData {
       _$TableDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$TableDataToJson(this);
+}
+
+class TableForm {
+  final int index;
+
+  TableForm({this.index});
 }

@@ -10,6 +10,7 @@ import '../statistics.dart';
 class DataController extends ChangeNotifier {
   final TableRepository tableRepository = TableRepository();
   final StatisticsController statisticsController;
+  final tableIndex;
 
   TableData tableData;
 
@@ -18,12 +19,12 @@ class DataController extends ChangeNotifier {
   static DataController get(BuildContext context) =>
       Provider.of<DataController>(context, listen: false);
 
-  DataController(this.statisticsController) {
+  DataController(this.tableIndex, this.statisticsController) {
     fetch();
   }
 
   void fetch() {
-    tableRepository.getTableData().then((tableData) {
+    tableRepository.getTableData(tableIndex).then((tableData) {
       this.tableData = tableData;
       notifyListeners();
       statisticsController.setTableData(tableData);
@@ -31,7 +32,7 @@ class DataController extends ChangeNotifier {
   }
 
   Future<void> update(TableData tableData) async {
-    await tableRepository.updateTableDate(tableData);
+    await tableRepository.updateTableDate(tableIndex, tableData);
     fetch();
   }
 
