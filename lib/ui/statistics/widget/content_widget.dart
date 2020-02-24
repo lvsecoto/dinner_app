@@ -22,20 +22,21 @@ class StatisticsContentWidget extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () async {
-              bool confirm = await showDialog<bool>(context: context,
+              bool confirm = await showDialog<bool>(
+                  context: context,
                   builder: (_) =>
                       AlertDialog(
                         title: Text("确定要删除?"),
                         actions: <Widget>[
-                          FlatButton(child: Text("取消"),
+                          FlatButton(
+                            child: Text("取消"),
                             onPressed: () => Navigator.of(context).pop(false),
                           ),
-                          FlatButton(child: Text("确定"),
-                              onPressed: () => Navigator.of(context).pop(true)
-                          )
+                          FlatButton(
+                              child: Text("确定"),
+                              onPressed: () => Navigator.of(context).pop(true))
                         ],
-                      )
-              );
+                      ));
 
               if (confirm == false) {
                 return;
@@ -68,9 +69,8 @@ class StatisticsContentWidget extends StatelessWidget {
                         FlatButton(
                           child: Text("确定"),
                           onPressed: () async {
-                            await DataController.get(context).update(TableData(
-                                name: tableTitle
-                            ));
+                            await DataController.get(context)
+                                .update(TableData(name: tableTitle));
                             Navigator.pop(context);
                           },
                         )
@@ -78,6 +78,10 @@ class StatisticsContentWidget extends StatelessWidget {
                     ),
               );
             },
+          ),
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () => DataController.get(context).fetch(),
           )
         ],
       ),
@@ -127,16 +131,48 @@ class StatisticsContentWidget extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-            child: SingleChildScrollView(
-              child: TableWidget(),
-            ),
-          ),
-          SummaryWidget(),
-        ],
+      body: Consumer<DataController>(
+        builder: (_, controller, __) {
+          if (controller.tableData == null) {
+            return Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "数组加载中",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline6,
+                    ),
+                    SizedBox(width: 8),
+                    SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Theme
+                            .of(context)
+                            .primaryColor,
+                        strokeWidth: 1,
+                      ),
+                    )
+                  ],
+                ));
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Expanded(
+                child: SingleChildScrollView(
+                  child: TableWidget(),
+                ),
+              ),
+              SummaryWidget(),
+            ],
+          );
+        },
       ),
     );
   }
