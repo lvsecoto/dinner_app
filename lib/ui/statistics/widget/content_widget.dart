@@ -1,3 +1,4 @@
+import 'package:dinner_app/domain/table/table_repository.dart';
 import 'package:dinner_app/ui/statistics/controller/table_list_controller.dart';
 import 'package:dinner_app/ui/statistics/statistics.dart';
 import 'package:dinner_app/ui/statistics/widget/talbe_list_widget.dart';
@@ -12,23 +13,51 @@ class StatisticsContentWidget extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("饭量统计"),
+        title: Consumer<DataController>(
+          builder: (_, controller, __) {
+            return Text(controller.tableData?.name ?? "未定义");
+          },
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () async {
-              var controller = Provider.of<DataController>(
-                  context, listen: false);
+              var controller =
+              Provider.of<DataController>(context, listen: false);
               var index = controller.tableIndex;
-              var newIndex = await Provider.of<TableAllController>(
-                  context, listen: false)
+              var newIndex =
+              await Provider.of<TableAllController>(context, listen: false)
                   .delete(index, controller.tableData);
 
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (_) =>
-                          StatisticsPageWidget(
-                              tableIndex: newIndex)));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (_) => StatisticsPageWidget(tableIndex: newIndex)));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () async {
+              var tableTitle;
+              showDialog(
+                context: context,
+                builder: (_) =>
+                    AlertDialog(
+                      title: Text("输入表格名称"),
+                      content: TextField(
+                        onChanged: (it) => tableTitle = it,
+                      ),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text("确定"),
+                          onPressed: () async {
+                            await DataController.get(context).update(TableData(
+                                name: tableTitle
+                            ));
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ),
+              );
             },
           )
         ],

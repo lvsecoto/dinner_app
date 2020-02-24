@@ -45,7 +45,11 @@ class TableRepository {
     List data = response.data["kv"];
 
     return data
-        .mapIndexedNotNull((index, e) => TableForm(index: index))
+        .mapIndexedNotNull((index, e) =>
+        TableForm(
+            index: index,
+            name: e["name"]
+        ))
         .toList();
   }
 
@@ -82,6 +86,9 @@ class TableRepository {
   includeIfNull: false,
 )
 class TableData {
+  @JsonKey(defaultValue: "表格")
+  String name;
+
   @JsonKey(defaultValue: 0.0)
   double yuanAmount;
   @JsonKey(defaultValue: 0.0)
@@ -98,14 +105,16 @@ class TableData {
   @JsonKey(defaultValue: false)
   bool baSchedule;
 
-  TableData(
-      {this.yuanAmount,
-      this.qiaoAmount,
-      this.maAmount,
-      this.baAmount,
-      this.yuanSchedule,
-      this.qiaoSchedule,
-      this.baSchedule});
+  TableData({
+    this.yuanAmount,
+    this.qiaoAmount,
+    this.maAmount,
+    this.baAmount,
+    this.yuanSchedule,
+    this.qiaoSchedule,
+    this.baSchedule,
+    this.name,
+  });
 
   factory TableData.fromJson(Map<String, dynamic> json) =>
       _$TableDataFromJson(json);
@@ -115,6 +124,7 @@ class TableData {
 
 class TableForm {
   final int index;
+  final String name;
 
-  TableForm({this.index});
+  TableForm({this.index, this.name});
 }

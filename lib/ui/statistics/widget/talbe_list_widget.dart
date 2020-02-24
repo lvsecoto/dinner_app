@@ -12,7 +12,7 @@ class TableListWidget extends StatelessWidget {
           children: <Widget>[
             ...controller.tables?.map((e) {
                   return ListTile(
-                    title: Text(e.index.toString()),
+                    title: Text(e.name ?? e.index),
                     onTap: () async {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (_) =>
