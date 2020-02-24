@@ -18,8 +18,6 @@ class AmountWidget extends StatelessWidget {
         labelText: "饭量",
         border: const OutlineInputBorder(),
       ),
-      keyboardType:
-      TextInputType.numberWithOptions(signed: false, decimal: true),
       inputFormatters: [DecimalTextInputFormatter(decimalRange: 2)],
       onSubmitted: (it) => didChanged(double.tryParse(it)),
     );
