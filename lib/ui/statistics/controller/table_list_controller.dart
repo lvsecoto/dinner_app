@@ -20,12 +20,17 @@ class TableAllController extends ChangeNotifier {
     fetch();
   }
 
-  void fetch() {
-    tableRepository.getTableForm().then((value) {
+  Future<void> fetch() {
+    return tableRepository.getTableForm().then((value) {
       tables = value;
       notifyListeners();
     });
   }
 
-  void addTable() {}
+  Future<int> addTable() async {
+    await tableRepository.add();
+    await fetch();
+    return tables.length - 1;
+  }
+
 }

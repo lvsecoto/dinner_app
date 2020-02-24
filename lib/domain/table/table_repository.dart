@@ -47,6 +47,14 @@ class TableRepository {
     return data.mapIndexedNotNull((index, e) => TableForm(index: index))
         .toList();
   }
+
+  Future<void> add() async {
+    return dio.put("/classes/table_data/LuF1000H",
+        data: jsonEncode({
+          "kv": {"__op": "Add", "objects": [{"name": "表1"}]}
+        })
+    );
+  }
 }
 
 @JsonSerializable(

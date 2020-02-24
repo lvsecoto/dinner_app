@@ -5,6 +5,6 @@ void main() async {
   test('', () async {
     final repository = TableRepository();
 
-    await repository.getTableForm();
+    await repository.add();
   });
 }

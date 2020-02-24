@@ -32,10 +32,16 @@ class StatisticsContentWidget extends StatelessWidget {
                       child: FloatingActionButton(
                         backgroundColor: Colors.white,
                         child: Icon(Icons.add, color: Colors.blue),
-                        onPressed: () {
-                          Provider.of<TableAllController>(
+                        onPressed: () async {
+                          var newTableIndex = await Provider.of<
+                              TableAllController>(
                               context, listen: false)
                               .addTable();
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      StatisticsPageWidget(
+                                          tableIndex: newTableIndex)));
                         },
                       ),
                     ),

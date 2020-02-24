@@ -23,8 +23,8 @@ class DataController extends ChangeNotifier {
     fetch();
   }
 
-  void fetch() {
-    tableRepository.getTableData(tableIndex).then((tableData) {
+  Future<void> fetch() {
+    return tableRepository.getTableData(tableIndex).then((tableData) {
       this.tableData = tableData;
       notifyListeners();
       statisticsController.setTableData(tableData);
