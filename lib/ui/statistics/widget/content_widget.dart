@@ -22,6 +22,25 @@ class StatisticsContentWidget extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () async {
+              bool confirm = await showDialog<bool>(context: context,
+                  builder: (_) =>
+                      AlertDialog(
+                        title: Text("确定要删除?"),
+                        actions: <Widget>[
+                          FlatButton(child: Text("取消"),
+                            onPressed: () => Navigator.of(context).pop(false),
+                          ),
+                          FlatButton(child: Text("确定"),
+                              onPressed: () => Navigator.of(context).pop(true)
+                          )
+                        ],
+                      )
+              );
+
+              if (confirm == false) {
+                return;
+              }
+
               var controller =
               Provider.of<DataController>(context, listen: false);
               var index = controller.tableIndex;
