@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class ScheduleWidget extends StatefulWidget {
   final void Function(bool) didChanged;
+  final void Function(bool) sync;
 
   final bool schedule;
 
-  const ScheduleWidget({Key key, this.schedule, this.didChanged})
+  const ScheduleWidget({Key key, this.schedule, this.didChanged, this.sync})
       : super(key: key);
 
   @override
@@ -23,7 +24,9 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         ChoiceChip(
           label: Text("上班"),
@@ -48,6 +51,16 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                 widget.didChanged(has);
               }
             });
+          },
+        ),
+
+        SizedBox(width: 12),
+        IconButton(
+          icon: Icon(Icons.file_upload, color: theme.primaryColor),
+          onPressed: () {
+            if (widget.sync != null) {
+              widget.sync(has);
+            }
           },
         )
       ],

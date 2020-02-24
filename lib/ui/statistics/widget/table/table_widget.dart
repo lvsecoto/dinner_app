@@ -34,6 +34,10 @@ class TableWidget extends StatelessWidget {
                   DataController.get(context)
                       .update(TableData(yuanSchedule: it));
                 },
+                sync: (it) {
+                  DataController.get(context).syncAll(
+                      TableData(yuanSchedule: it));
+                },
               );
             },
           ),
@@ -51,6 +55,10 @@ class TableWidget extends StatelessWidget {
                   changedScheduler: (it) {
                     StatisticsController.get(context).setQiaoSchedule(it);
                     DataController.get(context).update(
+                        TableData(qiaoSchedule: it));
+                  },
+                  sync: (it) {
+                    DataController.get(context).syncAll(
                         TableData(qiaoSchedule: it));
                   },
                 ),
@@ -79,6 +87,10 @@ class TableWidget extends StatelessWidget {
                   changedScheduler: (it) {
                     StatisticsController.get(context).setBaSchedule(it);
                     DataController.get(context).update(
+                        TableData(baSchedule: it));
+                  },
+                  sync: (it) {
+                    DataController.get(context).syncAll(
                         TableData(baSchedule: it));
                   },
                 ),

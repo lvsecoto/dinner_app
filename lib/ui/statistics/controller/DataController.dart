@@ -36,6 +36,17 @@ class DataController extends ChangeNotifier {
     fetch();
   }
 
+  Future<void> syncAll(TableData tableData) async {
+    var forms = await tableRepository.getTableForm();
+    var length = forms.length;
+
+    for (int i = 0; i < length; i++) {
+      await tableRepository.updateTableDate(i, tableData);
+    }
+
+    fetch();
+  }
+
   @override
   void dispose() {
     super.dispose();

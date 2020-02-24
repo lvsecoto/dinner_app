@@ -8,6 +8,7 @@ class TableDataWidget extends StatelessWidget {
   final bool schedule;
   final void Function(bool) changedScheduler;
   final void Function(double) changedAmount;
+  final void Function(bool) sync;
 
   TableDataWidget({
     Key key,
@@ -16,6 +17,7 @@ class TableDataWidget extends StatelessWidget {
     this.title,
     this.amount,
     this.schedule,
+    this.sync,
   }) : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class TableDataWidget extends StatelessWidget {
                 key: ValueKey(schedule),
                 schedule: schedule,
                 didChanged: changedScheduler,
+                sync: sync,
               ),
             if (changedScheduler != null) SizedBox(height: 16),
           ],
